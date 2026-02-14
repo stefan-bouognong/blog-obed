@@ -1,13 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { PenLine, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import logo from "../../../src/images/Logo.png";
-//updates to do now as follows : sharing to social media
-//adding images to about page
-//adding logo and editing name of blog
-//
+
 export function Header() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,7 +14,7 @@ export function Header() {
   const navLinks = [
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
-    { path: "/admin", label: "Admin" },
+    // Admin retiré du header
   ];
 
   return (
@@ -30,12 +27,9 @@ export function Header() {
               animate={{ rotate: 0 }}
               transition={{ duration: 0.3 }}
             >
-              {/* logo here */}
-              <img src={logo} alt="test" className="w-12" />
+              <img src={logo} alt="Logo" className="w-12" />
             </motion.div>
-            <span className="text-xl font-semibold text-foreground">
-              EKM Blog
-            </span>
+            <span className="text-xl font-semibold text-foreground">EKM Blog</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -66,11 +60,7 @@ export function Header() {
             className="md:hidden p-2 text-foreground"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
@@ -87,10 +77,7 @@ export function Header() {
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "block py-2 nav-link",
-                  isActive(link.path) && "nav-link-active"
-                )}
+                className={cn("block py-2 nav-link", isActive(link.path) && "nav-link-active")}
               >
                 {link.label}
               </Link>

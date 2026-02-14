@@ -13,30 +13,16 @@ export function Footer() {
     <footer className="border-t border-border mt-20">
       <div className="container mx-auto px-6 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Navigation Links */}
-          {/* <nav className="flex items-center gap-6 text-sm">
-            <Link
-              to="/"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              to="/about"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              About
-            </Link>
-            <Link
-              to="/admin"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Admin
-            </Link>
-          </nav> */}
+          {/* Admin discret */}
+          <Link
+            to="/admin"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors md:order-2"
+          >
+            Administration
+          </Link>
 
           {/* Social Icons */}
-          <div className="flex items-center gap-4 mx-auto">
+          <div className="flex items-center gap-4 mx-auto md:order-1">
             {socialLinks.map(({ icon: Icon, href, label }) => (
               <a
                 key={label}

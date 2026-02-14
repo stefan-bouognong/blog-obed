@@ -13,6 +13,7 @@ interface BlogContextType {
   deleteArticle: (id: number) => Promise<void>;
   getArticle: (id: number) => Article | undefined;
   refreshArticles: () => Promise<void>;
+  getLatestArticles: (count: number, excludeId?: number) => Article[];
 }
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -64,6 +65,15 @@ export function BlogProvider({ children, token: initialToken }: { children: Reac
     await loadArticles();
   };
 
+  // 🔥 Fonction pour récupérer les derniers articles
+  const getLatestArticles = (count: number, excludeId?: number) => {
+    let filtered = articles;
+    if (excludeId) filtered = filtered.filter(a => a.id !== excludeId);
+    return filtered
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, count);
+  };
+
   return (
     <BlogContext.Provider value={{
       articles,
@@ -75,7 +85,8 @@ export function BlogProvider({ children, token: initialToken }: { children: Reac
       updateArticle,
       deleteArticle,
       getArticle,
-      refreshArticles
+      refreshArticles,
+      getLatestArticles, // ✅ ajouté ici
     }}>
       {children}
     </BlogContext.Provider>

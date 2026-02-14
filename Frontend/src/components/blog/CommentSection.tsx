@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
-import { MessageCircle, Send, User } from 'lucide-react';
+import { MessageCircle, User, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -30,18 +30,17 @@ export function CommentSection({ articleId }: CommentSectionProps) {
         setComments(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erreur lors du chargement des commentaires');
-        console.error('Error loading comments:', err);
       } finally {
         setLoading(false);
       }
     };
-
     loadComments();
   }, [articleId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message.trim()) return;
+    const trimmedMessage = message.trim();
+    if (!trimmedMessage) return;
 
     setIsSubmitting(true);
     setError(null);
@@ -49,16 +48,16 @@ export function CommentSection({ articleId }: CommentSectionProps) {
     try {
       const newComment = await api.createComment({
         nom: name.trim() || 'Anonymous',
-        message: message.trim(),
+        message: trimmedMessage,
         article: articleId,
       });
 
-      setComments(prev => [newComment, ...prev]);
+      // Éviter doublons
+      setComments(prev => [newComment, ...prev.filter(c => c.id !== newComment.id)]);
       setName('');
       setMessage('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur lors de l\'envoi du commentaire');
-      console.error('Error creating comment:', err);
     } finally {
       setIsSubmitting(false);
     }
@@ -71,37 +70,29 @@ export function CommentSection({ articleId }: CommentSectionProps) {
         Commentaires ({comments.length})
       </h2>
 
-      {/* Comment Form */}
+      {/* Formulaire */}
       <form onSubmit={handleSubmit} className="mb-10 space-y-4">
-        {error && (
-          <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">
-            {error}
-          </div>
-        )}
-        <div>
-          <Input
-            placeholder="Votre nom (optionnel)"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="max-w-sm"
-          />
-        </div>
-        <div>
-          <Textarea
-            placeholder="Partagez vos pensées..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-            className="min-h-[100px]"
-          />
-        </div>
+        {error && <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">{error}</div>}
+        <Input
+          placeholder="Votre nom (optionnel)"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          className="max-w-sm"
+        />
+        <Textarea
+          placeholder="Partagez vos pensées..."
+          value={message}
+          onChange={e => setMessage(e.target.value)}
+          required
+          className="min-h-[100px]"
+        />
         <Button type="submit" disabled={isSubmitting || !message.trim()}>
           <Send className="h-4 w-4 mr-2" />
           {isSubmitting ? 'Envoi...' : 'Publier le commentaire'}
         </Button>
       </form>
 
-      {/* Comments List */}
+      {/* Liste des commentaires */}
       {loading ? (
         <p className="text-muted-foreground text-center py-8">Chargement des commentaires...</p>
       ) : (
@@ -124,7 +115,7 @@ export function CommentSection({ articleId }: CommentSectionProps) {
                     <User className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">{comment.nom}</p>
+                    <p className="font-medium text-foreground">{comment.nom || 'Anonymous'}</p>
                     <p className="text-sm text-muted-foreground">
                       {format(new Date(comment.created_at), 'd MMM yyyy · HH:mm')}
                     </p>

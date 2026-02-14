@@ -9,10 +9,14 @@ interface BlogCardProps {
 }
 
 export function BlogCard({ article, index = 0 }: BlogCardProps) {
-  // Extraire un extrait du contenu (premiers 150 caractères)
-  const excerpt = article.contenu.length > 150 
-    ? article.contenu.substring(0, 150) + '...'
-    : article.contenu;
+  if (!article) return null; // 🔥 protection 1
+
+  const contenu = article.contenu || ""; // 🔥 protection 2
+
+  const excerpt =
+    contenu.length > 150
+      ? contenu.substring(0, 150) + "..."
+      : contenu;
 
   return (
     <motion.article
@@ -26,7 +30,7 @@ export function BlogCard({ article, index = 0 }: BlogCardProps) {
           <div className="relative overflow-hidden aspect-[16/10]">
             <img
               src={article.image_url}
-              alt={article.titre}
+              alt={article.titre || ""}
               className="w-full h-full object-cover image-zoom"
             />
           </div>
@@ -43,7 +47,8 @@ export function BlogCard({ article, index = 0 }: BlogCardProps) {
 
           <div className="flex items-center gap-3">
             <p className="blog-meta text-xs text-muted-foreground">
-              {format(new Date(article.created_at), "d MMM yyyy")}
+              {article.created_at &&
+                format(new Date(article.created_at), "d MMM yyyy")}
             </p>
           </div>
         </div>

@@ -7,6 +7,7 @@ export interface Article {
   image_url: string | null;
   created_at: string;
   updated_at: string;
+  categorie: string;
   admin: number; // ID de l'utilisateur
 }
 
@@ -23,12 +24,14 @@ export interface CreateArticleData {
   titre: string;
   contenu: string;
   image_url?: string | null;
+  categorie: string;
 }
 
 export interface UpdateArticleData {
   titre?: string;
   contenu?: string;
   image_url?: string | null;
+  categorie?: string;
 }
 
 export interface CreateCommentaireData {

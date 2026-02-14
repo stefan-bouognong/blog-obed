@@ -33,6 +33,7 @@ const emptyArticle: CreateArticleData = {
   titre: '',
   contenu: '',
   image_url: null,
+  categorie: 'BELGIQUE',
 };
 
 const Admin = () => {
@@ -59,6 +60,7 @@ const Admin = () => {
       titre: article.titre,
       contenu: article.contenu,
       image_url: article.image_url,
+      categorie: article.categorie,
     });
     setImageFile(null);
     setImagePreview(article.image_url || null);
@@ -158,6 +160,7 @@ const Admin = () => {
           titre: editingArticle.titre,
           contenu: editingArticle.contenu,
           image_url: imageUrl,
+          categorie: editingArticle.categorie,
         });
         toast({
           title: 'Article mis à jour',
@@ -168,6 +171,7 @@ const Admin = () => {
           titre: editingArticle.titre,
           contenu: editingArticle.contenu,
           image_url: imageUrl,
+          categorie: editingArticle.categorie,
         });
         toast({
           title: 'Article créé',
@@ -352,6 +356,28 @@ const Admin = () => {
                 required
               />
             </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-2 block">
+                Catégorie *
+              </label>
+              <select
+                value={editingArticle.categorie || 'BELGIQUE'}
+                onChange={(e) =>
+                  setEditingArticle({ ...editingArticle, categorie: e.target.value })
+                }
+                className="w-full border rounded-md px-3 py-2 bg-background"
+              >
+                <option value="BELGIQUE">
+                  Économie et Société – Belgique
+                </option>
+                <option value="CONGO">
+                  Économie et Société – République du Congo
+                </option>
+                <option value="FINANCE">
+                  Finance et Gestion
+                </option>
+              </select>
+            </div>
 
             <div>
               <Label>Image de l'article</Label>
@@ -374,6 +400,7 @@ const Admin = () => {
                 />
               )}
             </div>
+
 
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">
