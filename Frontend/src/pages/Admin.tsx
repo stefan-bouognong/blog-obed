@@ -217,7 +217,7 @@ const Admin = () => {
               </p>
               <p className="text-sm text-muted-foreground mt-2">
                 Note: Vous devez être connecté en tant qu'administrateur via{' '}
-                <a href="http://localhost:8000/admin" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                <a href="https://backend-blog-6oio.onrender.com/admin" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                   l'interface Django /admin
                 </a>{' '}
                 pour créer, modifier ou supprimer des articles.

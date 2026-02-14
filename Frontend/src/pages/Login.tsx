@@ -15,7 +15,7 @@ const Login = () => {
 
     try {
       // Appel à l'API Django pour récupérer le token
-      const res = await fetch('http://localhost:8000/api-token-auth/', {
+      const res = await fetch('https://backend-blog-6oio.onrender.com/api-token-auth/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

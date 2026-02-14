@@ -1,7 +1,7 @@
 // src/lib/api.ts
 import type { Article, Commentaire, CreateArticleData, UpdateArticleData, CreateCommentaireData } from '@/types/blog';
 
-const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = 'https://backend-blog-6oio.onrender.com/api';
 
 interface ApiError {
   detail?: string;
